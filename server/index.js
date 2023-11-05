@@ -19,7 +19,7 @@ app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
 });
 const corsOptions = {
-    origin: "http://localhost:4000",
+    origin: "*",
     methods: ["GET", "POST","PUT","DELETE"],
     credentials: true,
 
