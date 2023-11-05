@@ -30,4 +30,4 @@ app.use(cookieParser());
 
 app.use(express.json());
 
-app.use('/',authRoute)
+app.use('/api/v1',authRoute)
