@@ -19,7 +19,7 @@ app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
 });
 const corsOptions = {
-    origin: "*",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST","PUT","DELETE"],
     credentials: true,
 
@@ -30,4 +30,4 @@ app.use(cookieParser());
 
 app.use(express.json());
 
-app.use('/api/v1',authRoute)
+app.use('/',authRoute)
