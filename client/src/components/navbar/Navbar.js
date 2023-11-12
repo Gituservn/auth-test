@@ -1,15 +1,16 @@
-import { Link, useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import "./navbar.scss";
 import useUserStore from "../../store/UserStore";
-import { useCookies } from "react-cookie";
+import {useCookies} from "react-cookie";
 
 function Navbar() {
-  const [cookies, removeCookie] = useCookies([]);
+  const [_, removeCookie] = useCookies([]);
   const navigate = useNavigate();
-  const user = useUserStore(state => state.user);
+  const { user ,updateUser} = useUserStore();
   const logout = () => {
     removeCookie("token");
     navigate("/login");
+    updateUser({});
   };
   return (
     <div className="navbar">
@@ -19,7 +20,7 @@ function Navbar() {
             Home
           </Link>
         </li>
-        {!user ? (
+        {!user.status ? (
           <div className="navbar__list-auth">
             <li className="navbar__list-item">
               <Link className="App-link" to="/login">
