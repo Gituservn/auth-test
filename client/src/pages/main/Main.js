@@ -1,47 +1,25 @@
-import {useState,useEffect} from "react";
-import {useNavigate} from "react-router-dom";
-import axios from "axios";
-import {useCookies} from "react-cookie";
-import {toast} from 'react-toastify';
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import useUserStore from "../../store/UserStore";
+
 function Main() {
-    const navigate = useNavigate();
-    const [cookies,removeCookie] = useCookies([]);
+  const navigate = useNavigate();
+  const [__, removeCookie] = useCookies([]);
+  const { user, updateUser } = useUserStore();
 
-    useEffect(()=>{
-        const checkUser = async ()=>{
-            if(!cookies.token){
-                navigate('/auth')
-            }
-            const {data} = await axios.post('http://localhost:4000/',{},{
-                withCredentials:true
-            })
-            const {status,user} = data;
-            if (status){
-                toast(`welcome ${user}`)
-                useUserStore.setState({user})
-            }else {
-                removeCookie('token');
-                navigate('/auth')
-            }
-        }
-        checkUser()
-    },[cookies,navigate,removeCookie])
-
-    const logout = () => {
-        removeCookie('token')
-        navigate('/auth')
-        useUserStore.setState({user:null})
-    }
-    return (
-        <div>
-            <h4>
-                {''}
-                welcome {useUserStore(state=>state.user)}
-            </h4>
-            <button onClick = {logout}>logout</button>
-        </div>
-    );
+  const logout = () => {
+    removeCookie("token");
+    navigate("/login");
+    useUserStore.setState({});
+  };
+  return (
+    <div>
+      <h4>
+        welcome {user.username} you are {user.role}
+      </h4>
+      <button onClick={logout}>logout</button>
+    </div>
+  );
 }
 
 export default Main;
