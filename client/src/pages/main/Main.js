@@ -1,21 +1,21 @@
-import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
+import {useNavigate} from "react-router-dom";
+import {useCookies} from "react-cookie";
 import useUserStore from "../../store/UserStore";
 
 function Main() {
   const navigate = useNavigate();
-  const [__, removeCookie] = useCookies([]);
+  const [_, removeCookie] = useCookies([]);
   const { user, updateUser } = useUserStore();
-
+    console.log(user)
   const logout = () => {
     removeCookie("token");
     navigate("/login");
-    useUserStore.setState({});
+   updateUser({});
   };
   return (
     <div>
       <h4>
-        welcome {user.username} you are {user.role}
+        welcome {user.user} you are {user.role}
       </h4>
       <button onClick={logout}>logout</button>
     </div>
