@@ -6,7 +6,6 @@ function Main() {
   const navigate = useNavigate();
   const [_, removeCookie] = useCookies([]);
   const { user, updateUser } = useUserStore();
-    console.log(user)
   const logout = () => {
     removeCookie("token");
     navigate("/login");
