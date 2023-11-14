@@ -33,10 +33,9 @@ function App() {
 
       if (status) {
         updateUser(data);
-        console.log(user);
       } else {
         removeCookie("token");
-        navigate("/login");
+        // navigate("/login");
       }
     };
     checkUser();

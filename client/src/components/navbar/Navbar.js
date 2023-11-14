@@ -1,12 +1,12 @@
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./navbar.scss";
 import useUserStore from "../../store/UserStore";
-import {useCookies} from "react-cookie";
+import { useCookies } from "react-cookie";
 
 function Navbar() {
   const [_, removeCookie] = useCookies([]);
   const navigate = useNavigate();
-  const { user ,updateUser} = useUserStore();
+  const { user, updateUser } = useUserStore();
   const logout = () => {
     removeCookie("token");
     navigate("/login");
