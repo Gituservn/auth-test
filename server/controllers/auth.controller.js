@@ -1,5 +1,5 @@
 import User from "../models/user.model.js";
-import {createToken} from "../utils/SecretToken.js";
+import { createToken } from "../utils/SecretToken.js";
 import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 import mailgen from "mailgen";
@@ -26,41 +26,40 @@ const Signup = async (req, res, next) => {
       httpOnly: false,
     });
 
-    const emailMessage = `Вітаємо ${userDataToSend.username}  зареєструйтесь у нас.`
+    const emailMessage = `welcome to my app`;
 
     const mailGenerator = new mailgen({
-      theme: "neopolitan",
+      theme: "cerberus",
       product: {
-        name: "Mailgen",
-        link : 'https://mailgen.js/',
+        name: "AUTH APP",
+        link: "https://mailgen.js/",
       },
     });
 
     const response = {
       body: {
-        name : "Daily Tuition",
-        intro: "Your bill has arrived!",
-        table : {
-          data : [
-            {
-              item : "Nodemailer Stack Book",
-              description: "A Backend application",
-              price : "$10.99",
-            }
-          ]
+        name: `${userDataToSend.username}`,
+        intro: `Welcome to my app.`,
+        action: {
+          instructions: "Click the button to contact me:",
+          button: {
+            color: "#22BC66", // Optional action button color
+            text: "Go to Linkedin",
+            link: "https://www.linkedin.com/in/eugene-serdyuk",
+          },
         },
-        outro: "Looking forward to do more business"
-      }
+        outro: "Need help, or have questions? Just reply to this email, we'd love to help.",
+      },
     };
 
     const mail = mailGenerator.generate(response);
 
-    try{
+    try {
       const emailInfo = await sendEmail(
-          user.email, // Кому
-          "Ласкаво просимо до вашого застосунку", // Ваш текст
-          emailMessage, // Текстове тіло
-          mail, // HTML тіло
+        user.email, // Кому
+        "Welcome", // Ваш текст
+        emailMessage, // Текстове тіло
+        mail, // HTML тіло
       );
       const response = {
         message: "Користувач успішно створений",
@@ -74,11 +73,10 @@ const Signup = async (req, res, next) => {
         };
       }
       res.status(201).json(response);
-    }catch(emailError){
+    } catch (emailError) {
       console.error("Email sending error:", emailError);
       res.status(500).json({ message: "Помилка відправки листа" });
     }
-
 
     next();
   } catch (err) {
