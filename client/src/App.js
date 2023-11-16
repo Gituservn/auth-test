@@ -9,16 +9,19 @@ import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import { ADMIN_ROLE } from "./constans/constans";
 import { useCookies } from "react-cookie";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import useUserStore from "./store/UserStore";
+import { SkewLoader } from "react-spinners";
 
 function App() {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [cookies, removeCookie] = useCookies([]);
   const { user, updateUser } = useUserStore();
   useEffect(() => {
     const checkUser = async () => {
+      setLoading(true);
       if (!cookies.token) {
         navigate("/login");
       }
@@ -33,26 +36,37 @@ function App() {
 
       if (status) {
         updateUser(data);
-        console.log(user);
+        setLoading(false);
       } else {
         removeCookie("token");
-        navigate("/login");
+        setLoading(false);
+        // navigate("/login");
       }
     };
     checkUser();
-  }, [cookies, navigate, removeCookie]);
+  }, [cookies, removeCookie]);
+
+  const Loader = () => {
+    return <SkewLoader color="#36c8d6" size={50} />;
+  };
   return (
     <div className="App">
-      <Header />
-      <Routes>
-        <Route element={<ProtectedRoute allowedRoles={[ADMIN_ROLE]} />}>
-          <Route path="admin" element={<h1>404</h1>} />
-        </Route>
+      {loading ? (
+        <Loader />
+      ) : (
+        <div>
+          <Header />
+          <Routes>
+            <Route element={<ProtectedRoute allowedRoles={[ADMIN_ROLE]} />}>
+              <Route path="admin" element={<h1>404</h1>} />
+            </Route>
 
-        <Route path="/" element={<Main />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Signup />} />
-      </Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Signup />} />
+          </Routes>
+        </div>
+      )}
     </div>
   );
 }

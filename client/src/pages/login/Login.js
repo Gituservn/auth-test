@@ -3,10 +3,13 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "../signup/Signup.scss";
+import useUserStore from "../../store/UserStore";
 
 const Login = () => {
   const navigate = useNavigate();
-
+  const user = useUserStore(state => state.user);
+  const loggedId = user.status;
+  console.log(loggedId);
   const [inputValue, setInputValue] = useState({
     email: "",
     password: "",
@@ -40,40 +43,44 @@ const Login = () => {
       password: "",
     });
   };
-  return (
-    <div className="form_container">
-      <h2 className="title">Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="inputs_wrapper">
-          <div className="inputs_wrapper-item">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={handleChange}
-            />
+  if (loggedId) {
+    navigate("/");
+  } else {
+    return (
+      <div className="form_container">
+        <h2 className="title">Login</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="inputs_wrapper">
+            <div className="inputs_wrapper-item">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="inputs_wrapper-item">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={handleChange}
+              />
+            </div>
+            <button className="submit_btn" type="submit">
+              login
+            </button>
           </div>
-          <div className="inputs_wrapper-item">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={handleChange}
-            />
-          </div>
-          <button className="submit_btn" type="submit">
-            login
-          </button>
-        </div>
-      </form>
-    </div>
-  );
+        </form>
+      </div>
+    );
+  }
 };
 
 export default Login;

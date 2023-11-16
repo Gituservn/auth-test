@@ -1,5 +1,5 @@
-import {useNavigate} from "react-router-dom";
-import {useCookies} from "react-cookie";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import useUserStore from "../../store/UserStore";
 
 function Main() {
@@ -9,14 +9,19 @@ function Main() {
   const logout = () => {
     removeCookie("token");
     navigate("/login");
-   updateUser({});
+    updateUser({});
   };
   return (
     <div>
       <h4>
-        welcome {user.user} you are {user.role}
+        {user.status ? (
+          <div>
+            welcome {user.user} you are {user.role} <button onClick={logout}>logout</button>
+          </div>
+        ) : (
+          "You must login first"
+        )}
       </h4>
-      <button onClick={logout}>logout</button>
     </div>
   );
 }

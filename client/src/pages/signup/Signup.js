@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { toast } from "react-toastify";
 import "./Signup.scss";
 
 const Signup = () => {
@@ -15,7 +14,6 @@ const Signup = () => {
     ...initialValues,
   });
   const { email, password, username } = inputValues;
-  const notify = message => toast(message);
   const handleChange = e => {
     const { name, value } = e.target;
     setInputValues({ ...inputValues, [name]: value });
@@ -31,19 +29,16 @@ const Signup = () => {
         },
         { withCredentials: true },
       );
-      const { success, message } = data;
+      const { success } = data;
 
       if (success) {
-        notify(message);
         setTimeout(() => {
           navigate("/login");
         }, 1000);
       } else {
-        toast.error(message);
       }
     } catch (error) {
       console.log(error);
-      toast(error.message);
     }
     setInputValues({
       ...inputValues,
